@@ -8,7 +8,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { showSuccess } from "@/utils/toast";
-import { availableRoles } from "@/data/roles"; // Importando as funções
+import { availableRoles } from "@/data/roles";
+import { Card, CardContent } from "@/components/ui/card";
+import { User, MapPin, Briefcase, Phone } from "lucide-react";
 
 // Define o Zod schema (Deve ser o mesmo usado em Registration.tsx)
 const EmployeeSchema = z.object({
@@ -62,6 +64,17 @@ export function EmployeeDetailsModal({ employee, isOpen, onClose, onSave }: Empl
     onClose();
   };
 
+  // Componente auxiliar para exibir um item de resumo
+  const SummaryItem = ({ icon: Icon, label, value }: { icon: React.ElementType, label: string, value: string | number }) => (
+    <div className="flex items-center space-x-2">
+      <Icon className="h-5 w-5 text-primary" />
+      <div>
+        <p className="text-xs font-medium text-muted-foreground">{label}</p>
+        <p className="text-sm font-semibold">{value}</p>
+      </div>
+    </div>
+  );
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -72,6 +85,16 @@ export function EmployeeDetailsModal({ employee, isOpen, onClose, onSave }: Empl
           </DialogDescription>
         </DialogHeader>
         
+        {/* Visual Summary Header */}
+        <Card className="mb-4 bg-muted/50">
+          <CardContent className="p-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+            <SummaryItem icon={User} label="Nome" value={employee.name} />
+            <SummaryItem icon={Briefcase} label="Função" value={employee.role} />
+            <SummaryItem icon={MapPin} label="Núcleo" value={employee.nucleusName || 'N/A'} />
+            <SummaryItem icon={Phone} label="Liderança" value={employee.leadership} />
+          </CardContent>
+        </Card>
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 p-2">
             
