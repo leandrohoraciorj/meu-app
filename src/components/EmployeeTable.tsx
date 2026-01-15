@@ -3,7 +3,7 @@ import { EmployeeData } from "@/data/employees";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Search, Download } from "lucide-react";
+import { Search, Download, Eye } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
 
 interface EmployeeTableProps {
@@ -79,6 +79,13 @@ export function EmployeeTable({ employees }: EmployeeTableProps) {
     document.body.removeChild(link);
     showSuccess("Dados exportados com sucesso!");
   };
+  
+  const handleViewDetails = (employee: EmployeeData) => {
+    console.log("Detalhes do Funcionário:", employee);
+    showSuccess(`Visualizando detalhes de ${employee.name}`);
+    // Aqui você implementaria a lógica para abrir um modal ou navegar para a página de detalhes.
+  };
+
 
   return (
     <div className="space-y-4">
@@ -109,8 +116,10 @@ export function EmployeeTable({ employees }: EmployeeTableProps) {
               <TableHead>Cidade</TableHead>
               <TableHead>Núcleo</TableHead>
               <TableHead>Liderança</TableHead>
+              <TableHead>Telefone</TableHead>
               <TableHead>Modalidade</TableHead>
               <TableHead className="text-right">Valor</TableHead>
+              <TableHead className="text-center">Ações</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -122,13 +131,24 @@ export function EmployeeTable({ employees }: EmployeeTableProps) {
                   <TableCell>{employee.city}</TableCell>
                   <TableCell>{employee.nucleusName}</TableCell>
                   <TableCell>{employee.leadership}</TableCell>
+                  <TableCell>{employee.phone}</TableCell>
                   <TableCell>{employee.modality}</TableCell>
                   <TableCell className="text-right">{employee.value}</TableCell>
+                  <TableCell className="text-center">
+                    <Button 
+                      variant="outline" 
+                      size="icon" 
+                      onClick={() => handleViewDetails(employee)}
+                      title="Ver Detalhes"
+                    >
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={7} className="h-24 text-center">
+                <TableCell colSpan={9} className="h-24 text-center">
                   Nenhum resultado encontrado.
                 </TableCell>
               </TableRow>
