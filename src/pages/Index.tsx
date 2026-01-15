@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { mockEmployees, EmployeeData } from "@/data/employees";
 import { useState } from "react";
 import { DashboardCharts } from "@/components/DashboardCharts";
-import { EmployeeTable } from "@/components/EmployeeTable";
 import { Users, MapPin, DollarSign, Building } from "lucide-react";
 
 const Index = () => {
@@ -75,9 +74,6 @@ const Index = () => {
 
         {/* Charts Section */}
         <DashboardCharts employees={employees} />
-
-        {/* Employee Data Table Section */}
-        <EmployeeTable employees={employees} />
       </div>
     </Layout>
   );

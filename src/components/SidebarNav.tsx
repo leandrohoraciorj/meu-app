@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { LayoutDashboard, UserPlus } from "lucide-react";
+import { LayoutDashboard, UserPlus, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
@@ -14,6 +14,11 @@ const navItems: NavItem[] = [
     title: "Dashboard & Relatórios",
     href: "/",
     icon: LayoutDashboard,
+  },
+  {
+    title: "Tabela de Funcionários",
+    href: "/funcionarios",
+    icon: Users,
   },
   {
     title: "Cadastro de Funcionário",
