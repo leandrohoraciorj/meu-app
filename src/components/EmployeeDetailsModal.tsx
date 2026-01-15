@@ -10,7 +10,7 @@ import * as z from "zod";
 import { showSuccess } from "@/utils/toast";
 import { availableRoles } from "@/data/roles";
 import { Card, CardContent } from "@/components/ui/card";
-import { User, MapPin, Briefcase, Phone } from "lucide-react";
+import { User, MapPin, Briefcase, Phone, DollarSign, Building, Hash, Users } from "lucide-react";
 
 // Define o Zod schema (Deve ser o mesmo usado em Registration.tsx)
 const EmployeeSchema = z.object({
@@ -70,7 +70,7 @@ export function EmployeeDetailsModal({ employee, isOpen, onClose, onSave }: Empl
       <Icon className="h-5 w-5 text-primary" />
       <div>
         <p className="text-xs font-medium text-muted-foreground">{label}</p>
-        <p className="text-sm font-semibold">{value}</p>
+        <p className="text-sm font-semibold truncate">{value}</p>
       </div>
     </div>
   );
@@ -85,13 +85,20 @@ export function EmployeeDetailsModal({ employee, isOpen, onClose, onSave }: Empl
           </DialogDescription>
         </DialogHeader>
         
-        {/* Visual Summary Header */}
+        {/* Visual Summary Header - Expanded */}
         <Card className="mb-4 bg-muted/50">
           <CardContent className="p-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+            {/* Row 1 */}
             <SummaryItem icon={User} label="Nome" value={employee.name} />
             <SummaryItem icon={Briefcase} label="Função" value={employee.role} />
-            <SummaryItem icon={MapPin} label="Núcleo" value={employee.nucleusName || 'N/A'} />
-            <SummaryItem icon={Phone} label="Liderança" value={employee.leadership} />
+            <SummaryItem icon={DollarSign} label="Valor (Salário)" value={employee.value || 'N/A'} />
+            <SummaryItem icon={Phone} label="Telefone Pessoal" value={employee.phone} />
+            
+            {/* Row 2 */}
+            <SummaryItem icon={Hash} label="Nº Núcleo" value={employee.nucleusNumber} />
+            <SummaryItem icon={Building} label="Núcleo" value={employee.nucleusName || 'N/A'} />
+            <SummaryItem icon={MapPin} label="Cidade" value={employee.city} />
+            <SummaryItem icon={Users} label="Liderança" value={employee.leadership} />
           </CardContent>
         </Card>
 
