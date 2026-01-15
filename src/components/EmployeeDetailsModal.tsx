@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { showSuccess } from "@/utils/toast";
+import { availableRoles } from "@/data/roles"; // Importando as funções
 
 // Define o Zod schema (Deve ser o mesmo usado em Registration.tsx)
 const EmployeeSchema = z.object({
@@ -249,9 +250,20 @@ export function EmployeeDetailsModal({ employee, isOpen, onClose, onSave }: Empl
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Função *</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione a função" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {availableRoles.map((role) => (
+                          <SelectItem key={role} value={role}>
+                            {role}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}

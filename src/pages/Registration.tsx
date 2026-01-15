@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { showSuccess } from "@/utils/toast";
+import { availableRoles } from "@/data/roles"; // Importando as funções
 
 // Define the Zod schema for validation
 const EmployeeSchema = z.object({
@@ -263,9 +264,20 @@ const Registration = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Função *</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Ex: Técnico, Coordenador" {...field} />
-                        </FormControl>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Selecione a função" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {availableRoles.map((role) => (
+                              <SelectItem key={role} value={role}>
+                                {role}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                         <FormMessage />
                       </FormItem>
                     )}
