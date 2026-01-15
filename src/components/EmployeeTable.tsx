@@ -3,11 +3,14 @@ import { EmployeeData } from "@/data/employees";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Search, Download, Eye } from "lucide-react";
+import { Search, Download, Eye, Trash2, Pencil } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 interface EmployeeTableProps {
   employees: EmployeeData[];
+  onViewDetails: (employee: EmployeeData) => void;
+  onDelete: (employeeId: string, employeeName: string) => void;
 }
 
 // Utility function to convert data to CSV format
@@ -15,9 +18,9 @@ const convertToCSV = (data: EmployeeData[]) => {
   if (data.length === 0) return "";
 
   const headers = [
-    "Nº NÚCLEO", "CIDADE", "NOME DO NÚCLEO", "LIDERANÇA", "NOME", "TELEFONE", 
-    "MODALIDADE", "FUNÇÃO", "CREF", "VALOR", "CNPJ", "PIX", "BANCO", "AGENCIA", 
-    "CONTA", "ENDEREÇO", "BAIRRO", "SEXO"
+    "ID", "Nº NÚCLEO", "CIDADE", "NOME DO NÚCLEO", "LOCAL", "ENDEREÇO DO NÚCLEO", "BAIRRO DO NÚCLEO", 
+    "LIDERANÇA", "TEL. LIDERANÇA", "NOME", "TELEFONE", "MODALIDADE", "FUNÇÃO", "CREF", "VALOR", 
+    "CNPJ", "PIX", "BANCO", "AGENCIA", "CONTA", "ENDEREÇO", "BAIRRO", "SEXO"
   ];
 
   const csvRows = [];
@@ -25,10 +28,15 @@ const convertToCSV = (data: EmployeeData[]) => {
 
   for (const employee of data) {
     const values = [
+      employee.id,
       employee.nucleusNumber,
       employee.city,
       employee.nucleusName,
+      employee.location,
+      employee.nucleusAddress,
+      employee.nucleusNeighborhood,
       employee.leadership,
+      employee.leadershipPhone,
       employee.name,
       employee.phone,
       employee.modality,
@@ -51,7 +59,7 @@ const convertToCSV = (data: EmployeeData[]) => {
   return csvRows.join('\n');
 };
 
-export function EmployeeTable({ employees }: EmployeeTableProps) {
+export function EmployeeTable({ employees, onViewDetails, onDelete }: EmployeeTableProps) {
   const [filter, setFilter] = useState("");
 
   const filteredEmployees = useMemo(() => {
@@ -68,7 +76,6 @@ export function EmployeeTable({ employees }: EmployeeTableProps) {
 
   const handleExport = () => {
     const csvData = convertToCSV(filteredEmployees);
-    // Use 'text/csv;charset=utf-8;' for standard CSV, or 'text/csv;charset=windows-1252;' for better Excel compatibility with Portuguese characters, but utf-8 is generally preferred.
     const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -80,13 +87,6 @@ export function EmployeeTable({ employees }: EmployeeTableProps) {
     showSuccess("Dados exportados com sucesso!");
   };
   
-  const handleViewDetails = (employee: EmployeeData) => {
-    console.log("Detalhes do Funcionário:", employee);
-    showSuccess(`Visualizando detalhes de ${employee.name}`);
-    // Aqui você implementaria a lógica para abrir um modal ou navegar para a página de detalhes.
-  };
-
-
   return (
     <div className="space-y-4">
       <h2 className="text-2xl font-semibold">Tabela de Funcionários</h2>
@@ -116,9 +116,6 @@ export function EmployeeTable({ employees }: EmployeeTableProps) {
               <TableHead>Cidade</TableHead>
               <TableHead>Núcleo</TableHead>
               <TableHead>Liderança</TableHead>
-              <TableHead>Telefone</TableHead>
-              <TableHead>Modalidade</TableHead>
-              <TableHead className="text-right">Valor</TableHead>
               <TableHead className="text-center">Ações</TableHead>
             </TableRow>
           </TableHeader>
@@ -131,24 +128,50 @@ export function EmployeeTable({ employees }: EmployeeTableProps) {
                   <TableCell>{employee.city}</TableCell>
                   <TableCell>{employee.nucleusName}</TableCell>
                   <TableCell>{employee.leadership}</TableCell>
-                  <TableCell>{employee.phone}</TableCell>
-                  <TableCell>{employee.modality}</TableCell>
-                  <TableCell className="text-right">{employee.value}</TableCell>
-                  <TableCell className="text-center">
+                  <TableCell className="text-center space-x-2 min-w-[150px]">
                     <Button 
                       variant="outline" 
                       size="icon" 
-                      onClick={() => handleViewDetails(employee)}
-                      title="Ver Detalhes"
+                      onClick={() => onViewDetails(employee)}
+                      title="Ver/Editar Detalhes"
                     >
-                      <Eye className="h-4 w-4" />
+                      <Pencil className="h-4 w-4" />
                     </Button>
+                    
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button 
+                          variant="destructive" 
+                          size="icon" 
+                          title="Excluir Funcionário"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Tem certeza absoluta?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Esta ação não pode ser desfeita. Isso excluirá permanentemente o registro de {employee.name} do sistema.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                          <AlertDialogAction 
+                            onClick={() => onDelete(employee.id, employee.name)}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          >
+                            Sim, Excluir
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={9} className="h-24 text-center">
+                <TableCell colSpan={6} className="h-24 text-center">
                   Nenhum resultado encontrado.
                 </TableCell>
               </TableRow>
