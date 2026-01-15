@@ -8,16 +8,16 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { showSuccess } from "@/utils/toast";
-import { availableRoles } from "@/data/roles"; // Importando as funções
+import { availableRoles } from "@/data/roles";
 
 // Define the Zod schema for validation
 const EmployeeSchema = z.object({
   nucleusNumber: z.string().min(1, "Nº Núcleo é obrigatório"),
   city: z.string().min(1, "Cidade é obrigatória"),
   nucleusName: z.string().optional(),
-  location: z.string().optional(), // Novo campo
-  nucleusAddress: z.string().optional(), // Novo campo
-  nucleusNeighborhood: z.string().optional(), // Novo campo
+  location: z.string().optional(),
+  nucleusAddress: z.string().optional(),
+  nucleusNeighborhood: z.string().optional(),
   leadership: z.string().min(1, "Liderança é obrigatória"),
   leadershipPhone: z.string().optional(),
   name: z.string().min(2, "Nome Completo é obrigatório"),
@@ -47,9 +47,9 @@ const Registration = () => {
       nucleusNumber: "",
       city: "",
       nucleusName: "",
-      location: "", // Default value for new field
-      nucleusAddress: "", // Default value for new field
-      nucleusNeighborhood: "", // Default value for new field
+      location: "",
+      nucleusAddress: "",
+      nucleusNeighborhood: "",
       leadership: "",
       leadershipPhone: "",
       name: "",
@@ -79,16 +79,18 @@ const Registration = () => {
   return (
     <Layout>
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold">Cadastro de Funcionário</h1>
+        <h1 className="text-2xl md:text-3xl font-bold">Cadastro de Funcionário</h1>
         <Card>
           <CardHeader>
             <CardTitle>Informações do Funcionário e Núcleo</CardTitle>
-            <CardDescription>Preencha os dados detalhados do novo colaborador e seu núcleo de atuação. Campos marcados com * são obrigatórios.</CardDescription>
+            <CardDescription>
+              Preencha os dados detalhados do novo colaborador e seu núcleo de atuação. 
+              Campos marcados com * são obrigatórios.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                
                 {/* Section 1: Nucleus Details (Dados do Núcleo) */}
                 <h3 className="text-lg font-semibold">Dados do Núcleo</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -132,7 +134,7 @@ const Registration = () => {
                     )}
                   />
                 </div>
-
+                
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <FormField
                     control={form.control}
@@ -174,7 +176,7 @@ const Registration = () => {
                     )}
                   />
                 </div>
-
+                
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
@@ -211,7 +213,7 @@ const Registration = () => {
                     control={form.control}
                     name="name"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="md:col-span-2">
                         <FormLabel>Nome Completo *</FormLabel>
                         <FormControl>
                           <Input placeholder="Nome do Funcionário" {...field} />
@@ -233,6 +235,9 @@ const Registration = () => {
                       </FormItem>
                     )}
                   />
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <FormField
                     control={form.control}
                     name="gender"
@@ -255,9 +260,6 @@ const Registration = () => {
                       </FormItem>
                     )}
                   />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <FormField
                     control={form.control}
                     name="role"
@@ -295,6 +297,9 @@ const Registration = () => {
                       </FormItem>
                     )}
                   />
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <FormField
                     control={form.control}
                     name="value"
@@ -308,14 +313,11 @@ const Registration = () => {
                       </FormItem>
                     )}
                   />
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
                     name="address"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="md:col-span-2">
                         <FormLabel>Endereço Pessoal</FormLabel>
                         <FormControl>
                           <Input placeholder="Rua, Avenida, etc." {...field} />
@@ -324,6 +326,9 @@ const Registration = () => {
                       </FormItem>
                     )}
                   />
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
                     name="neighborhood"
@@ -338,7 +343,6 @@ const Registration = () => {
                     )}
                   />
                 </div>
-
 
                 {/* Section 3: Financial/Registration Details (Dados Financeiros e Registro) */}
                 <h3 className="text-lg font-semibold pt-4 border-t">Dados Financeiros e Registro</h3>
@@ -383,7 +387,7 @@ const Registration = () => {
                     )}
                   />
                 </div>
-
+                
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <FormField
                     control={form.control}
@@ -415,7 +419,7 @@ const Registration = () => {
                     control={form.control}
                     name="account"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="md:col-span-2">
                         <FormLabel>Conta</FormLabel>
                         <FormControl>
                           <Input placeholder="Conta Corrente" {...field} />
@@ -425,7 +429,7 @@ const Registration = () => {
                     )}
                   />
                 </div>
-
+                
                 <Button type="submit" className="w-full md:w-auto">
                   Cadastrar Funcionário
                 </Button>

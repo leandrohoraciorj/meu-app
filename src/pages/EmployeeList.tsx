@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useEmployees } from "@/hooks/useEmployees";
 import { EmployeeDetailsModal } from "@/components/EmployeeDetailsModal";
 import { showSuccess, showError } from "@/utils/toast";
-import { FullWidthLayout } from "@/components/FullWidthLayout"; // Importando o novo layout
+import { FullWidthLayout } from "@/components/FullWidthLayout";
 
 const EmployeeList = () => {
   const { employees, updateEmployee, deleteEmployee } = useEmployees();
@@ -28,24 +28,22 @@ const EmployeeList = () => {
 
   return (
     <FullWidthLayout>
-      <div className="space-y-8">
-        <h1 className="text-3xl font-bold">Tabela de Funcionários</h1>
+      <div className="space-y-6">
+        <h1 className="text-2xl md:text-3xl font-bold">Tabela de Funcionários</h1>
         <EmployeeTable 
           employees={employees} 
-          onViewDetails={handleViewDetails}
-          onDelete={handleDeleteEmployee}
+          onViewDetails={handleViewDetails} 
+          onDelete={handleDeleteEmployee} 
         />
       </div>
-      
-      <EmployeeDetailsModal
-        employee={selectedEmployee}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSave={handleSaveEmployee}
+      <EmployeeDetailsModal 
+        employee={selectedEmployee} 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        onSave={handleSaveEmployee} 
       />
     </FullWidthLayout>
   );
-  
 };
 
 export default EmployeeList;

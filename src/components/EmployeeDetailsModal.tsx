@@ -65,7 +65,11 @@ export function EmployeeDetailsModal({ employee, isOpen, onClose, onSave }: Empl
   };
 
   // Componente auxiliar para exibir um item de resumo
-  const SummaryItem = ({ icon: Icon, label, value }: { icon: React.ElementType, label: string, value: string | number }) => (
+  const SummaryItem = ({ icon: Icon, label, value }: { 
+    icon: React.ElementType, 
+    label: string, 
+    value: string | number 
+  }) => (
     <div className="flex items-center space-x-2">
       <Icon className="h-5 w-5 text-primary" />
       <div>
@@ -77,376 +81,380 @@ export function EmployeeDetailsModal({ employee, isOpen, onClose, onSave }: Empl
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Detalhes e Edição de Funcionário</DialogTitle>
-          <DialogDescription>
-            Visualize e edite todas as informações de {employee.name}.
-          </DialogDescription>
-        </DialogHeader>
-        
-        {/* Visual Summary Header - Expanded */}
-        <Card className="mb-4 bg-muted/50">
-          <CardContent className="p-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-            {/* Row 1 */}
-            <SummaryItem icon={User} label="Nome" value={employee.name} />
-            <SummaryItem icon={Briefcase} label="Função" value={employee.role} />
-            <SummaryItem icon={DollarSign} label="Valor (Salário)" value={employee.value || 'N/A'} />
-            <SummaryItem icon={Phone} label="Telefone Pessoal" value={employee.phone} />
-            
-            {/* Row 2 */}
-            <SummaryItem icon={Hash} label="Nº Núcleo" value={employee.nucleusNumber} />
-            <SummaryItem icon={Building} label="Núcleo" value={employee.nucleusName || 'N/A'} />
-            <SummaryItem icon={MapPin} label="Cidade" value={employee.city} />
-            <SummaryItem icon={Users} label="Liderança" value={employee.leadership} />
-          </CardContent>
-        </Card>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
+        <div className="p-6">
+          <DialogHeader>
+            <DialogTitle>Detalhes e Edição de Funcionário</DialogTitle>
+            <DialogDescription>
+              Visualize e edite todas as informações de {employee.name}.
+            </DialogDescription>
+          </DialogHeader>
+          
+          {/* Visual Summary Header - Expanded */}
+          <Card className="mb-4 bg-muted/50">
+            <CardContent className="p-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                <SummaryItem icon={User} label="Nome" value={employee.name} />
+                <SummaryItem icon={Briefcase} label="Função" value={employee.role} />
+                <SummaryItem icon={DollarSign} label="Valor (Salário)" value={employee.value || 'N/A'} />
+                <SummaryItem icon={Phone} label="Telefone Pessoal" value={employee.phone} />
+                <SummaryItem icon={Hash} label="Nº Núcleo" value={employee.nucleusNumber} />
+                <SummaryItem icon={Building} label="Núcleo" value={employee.nucleusName || 'N/A'} />
+                <SummaryItem icon={MapPin} label="Cidade" value={employee.city} />
+                <SummaryItem icon={Users} label="Liderança" value={employee.leadership} />
+              </div>
+            </CardContent>
+          </Card>
+          
+          <div className="max-h-[60vh] overflow-y-auto pr-2">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                {/* Section 1: Nucleus Details (Dados do Núcleo) */}
+                <h3 className="text-lg font-semibold">Dados do Núcleo</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="nucleusNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Nº Núcleo *</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="city"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Cidade *</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="nucleusName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Nome do Núcleo</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="location"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Local (Ponto de Referência)</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="nucleusAddress"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Endereço do Núcleo</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="nucleusNeighborhood"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Bairro do Núcleo</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="leadership"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Liderança *</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="leadershipPhone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Tel. Liderança</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 p-2">
-            
-            {/* Section 1: Nucleus Details (Dados do Núcleo) */}
-            <h3 className="text-lg font-semibold">Dados do Núcleo</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <FormField
-                control={form.control}
-                name="nucleusNumber"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nº Núcleo *</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="city"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Cidade *</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="nucleusName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nome do Núcleo</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                {/* Section 2: Employee Details (Dados Pessoais e Contrato) */}
+                <h3 className="text-lg font-semibold pt-4 border-t">Dados Pessoais e Contrato</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem className="md:col-span-2">
+                        <FormLabel>Nome Completo *</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Telefone *</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="gender"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Sexo *</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Selecione o sexo" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="masculino">Masculino</SelectItem>
+                            <SelectItem value="feminino">Feminino</SelectItem>
+                            <SelectItem value="outros">Outros</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="role"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Função *</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Selecione a função" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {availableRoles.map((role) => (
+                              <SelectItem key={role} value={role}>
+                                {role}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="modality"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Modalidade *</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="value"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Valor (Salário)</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="address"
+                    render={({ field }) => (
+                      <FormItem className="md:col-span-2">
+                        <FormLabel>Endereço Pessoal</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="neighborhood"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Bairro Pessoal</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <FormField
-                control={form.control}
-                name="location"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Local (Ponto de Referência)</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="nucleusAddress"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Endereço do Núcleo</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="nucleusNeighborhood"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Bairro do Núcleo</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="leadership"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Liderança *</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="leadershipPhone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Tel. Liderança</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* Section 2: Employee Details (Dados Pessoais e Contrato) */}
-            <h3 className="text-lg font-semibold pt-4 border-t">Dados Pessoais e Contrato</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nome Completo *</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Telefone *</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="gender"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Sexo *</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione o sexo" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="masculino">Masculino</SelectItem>
-                        <SelectItem value="feminino">Feminino</SelectItem>
-                        <SelectItem value="outros">Outros</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <FormField
-                control={form.control}
-                name="role"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Função *</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione a função" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {availableRoles.map((role) => (
-                          <SelectItem key={role} value={role}>
-                            {role}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="modality"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Modalidade *</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="value"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Valor (Salário)</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="address"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Endereço Pessoal</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="neighborhood"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Bairro Pessoal</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-
-            {/* Section 3: Financial/Registration Details (Dados Financeiros e Registro) */}
-            <h3 className="text-lg font-semibold pt-4 border-t">Dados Financeiros e Registro</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <FormField
-                control={form.control}
-                name="cref"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>CREF</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="cnpj"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>CNPJ</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="pix"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Chave PIX</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <FormField
-                control={form.control}
-                name="bank"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Banco</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="agency"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Agência</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="account"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Conta</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <Button type="submit" className="w-full">
-              Salvar Alterações
-            </Button>
-          </form>
-        </Form>
+                {/* Section 3: Financial/Registration Details (Dados Financeiros e Registro) */}
+                <h3 className="text-lg font-semibold pt-4 border-t">Dados Financeiros e Registro</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="cref"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>CREF</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="cnpj"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>CNPJ</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="pix"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Chave PIX</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="bank"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Banco</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="agency"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Agência</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="account"
+                    render={({ field }) => (
+                      <FormItem className="md:col-span-2">
+                        <FormLabel>Conta</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                
+                <Button type="submit" className="w-full">
+                  Salvar Alterações
+                </Button>
+              </form>
+            </Form>
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );
