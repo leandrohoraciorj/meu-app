@@ -11,12 +11,15 @@ import { showSuccess } from "@/utils/toast";
 
 // Define the Zod schema for validation
 const EmployeeSchema = z.object({
-  nucleusNumber: z.string().min(1, "Número do Núcleo é obrigatório"),
+  nucleusNumber: z.string().min(1, "Nº Núcleo é obrigatório"),
   city: z.string().min(1, "Cidade é obrigatória"),
   nucleusName: z.string().optional(),
+  location: z.string().optional(), // Novo campo
+  nucleusAddress: z.string().optional(), // Novo campo
+  nucleusNeighborhood: z.string().optional(), // Novo campo
   leadership: z.string().min(1, "Liderança é obrigatória"),
   leadershipPhone: z.string().optional(),
-  name: z.string().min(2, "Nome do Funcionário é obrigatório"),
+  name: z.string().min(2, "Nome Completo é obrigatório"),
   phone: z.string().min(8, "Telefone é obrigatório"),
   modality: z.string().min(1, "Modalidade é obrigatória"),
   role: z.string().min(1, "Função é obrigatória"),
@@ -42,11 +45,25 @@ const Registration = () => {
     defaultValues: {
       nucleusNumber: "",
       city: "",
+      nucleusName: "",
+      location: "", // Default value for new field
+      nucleusAddress: "", // Default value for new field
+      nucleusNeighborhood: "", // Default value for new field
       leadership: "",
+      leadershipPhone: "",
       name: "",
       phone: "",
       modality: "",
       role: "",
+      cref: "",
+      value: "",
+      cnpj: "",
+      pix: "",
+      bank: "",
+      agency: "",
+      account: "",
+      address: "",
+      neighborhood: "",
       gender: 'masculino',
     },
   });
@@ -71,7 +88,122 @@ const Registration = () => {
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 
-                {/* Section 1: Employee Details */}
+                {/* Section 1: Nucleus Details (Dados do Núcleo) */}
+                <h3 className="text-lg font-semibold">Dados do Núcleo</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="nucleusNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Nº Núcleo *</FormLabel>
+                        <FormControl>
+                          <Input placeholder="301" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="city"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Cidade *</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Rio das Flores" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="nucleusName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Nome do Núcleo</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Ex: Núcleo A - Futebol" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="location"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Local (Ponto de Referência)</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Ex: Campo Municipal" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="nucleusAddress"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Endereço do Núcleo</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Rua Principal, 100" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="nucleusNeighborhood"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Bairro do Núcleo</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Centro" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="leadership"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Liderança *</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Nome do Líder" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="leadershipPhone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Tel. Liderança</FormLabel>
+                        <FormControl>
+                          <Input placeholder="(XX) XXXXX-XXXX" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                {/* Section 2: Employee Details (Dados Pessoais e Contrato) */}
                 <h3 className="text-lg font-semibold pt-4 border-t">Dados Pessoais e Contrato</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <FormField
@@ -165,7 +297,7 @@ const Registration = () => {
                     )}
                   />
                 </div>
-
+                
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
@@ -195,81 +327,8 @@ const Registration = () => {
                   />
                 </div>
 
-                {/* Section 2: Nucleus Details */}
-                <h3 className="text-lg font-semibold pt-4 border-t">Dados do Núcleo</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="nucleusNumber"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Nº Núcleo *</FormLabel>
-                        <FormControl>
-                          {/* Using text input for nucleusNumber as it might contain leading zeros or be treated as an identifier */}
-                          <Input placeholder="301" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="city"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Cidade *</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Rio das Flores" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="nucleusName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Nome do Núcleo</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Ex: Núcleo A - Futebol" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="leadership"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Liderança *</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Nome do Líder" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="leadershipPhone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Tel. Liderança</FormLabel>
-                        <FormControl>
-                          <Input placeholder="(XX) XXXXX-XXXX" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {/* Section 3: Financial/Registration Details */}
+                {/* Section 3: Financial/Registration Details (Dados Financeiros e Registro) */}
                 <h3 className="text-lg font-semibold pt-4 border-t">Dados Financeiros e Registro</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <FormField
