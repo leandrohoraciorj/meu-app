@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Search, Download, Eye, Trash2, Pencil } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Link } from "react-router-dom";
 
 interface EmployeeTableProps {
   employees: EmployeeData[];
@@ -16,16 +17,16 @@ interface EmployeeTableProps {
 // Utility function to convert data to CSV format
 const convertToCSV = (data: EmployeeData[]) => {
   if (data.length === 0) return "";
-
+  
   const headers = [
-    "ID", "Nº NÚCLEO", "CIDADE", "NOME DO NÚCLEO", "LOCAL", "ENDEREÇO DO NÚCLEO", "BAIRRO DO NÚCLEO", 
-    "LIDERANÇA", "TEL. LIDERANÇA", "NOME", "TELEFONE", "MODALIDADE", "FUNÇÃO", "CREF", "VALOR", 
+    "ID", "Nº NÚCLEO", "CIDADE", "NOME DO NÚCLEO", "LOCAL", "ENDEREÇO DO NÚCLEO", "BAIRRO DO NÚCLEO",
+    "LIDERANÇA", "TEL. LIDERANÇA", "NOME", "TELEFONE", "MODALIDADE", "FUNÇÃO", "CREF", "VALOR",
     "CNPJ", "PIX", "BANCO", "AGENCIA", "CONTA", "ENDEREÇO", "BAIRRO", "SEXO"
   ];
-
+  
   const csvRows = [];
   csvRows.push(headers.join(';'));
-
+  
   for (const employee of data) {
     const values = [
       employee.id,
@@ -52,18 +53,20 @@ const convertToCSV = (data: EmployeeData[]) => {
       employee.neighborhood,
       employee.gender,
     ];
+    
     // Wrapping values in quotes to handle commas/semicolons within data fields
     csvRows.push(values.map(v => `"${v}"`).join(';'));
   }
-
+  
   return csvRows.join('\n');
 };
 
 export function EmployeeTable({ employees, onViewDetails, onDelete }: EmployeeTableProps) {
   const [filter, setFilter] = useState("");
-
+  
   const filteredEmployees = useMemo(() => {
     if (!filter) return employees;
+    
     const lowerCaseFilter = filter.toLowerCase();
     return employees.filter(
       (e) =>
@@ -86,7 +89,7 @@ export function EmployeeTable({ employees, onViewDetails, onDelete }: EmployeeTa
     document.body.removeChild(link);
     showSuccess("Dados exportados com sucesso!");
   };
-  
+
   return (
     <div className="space-y-4">
       <h2 className="text-2xl font-semibold">Tabela de Funcionários</h2>
@@ -101,12 +104,12 @@ export function EmployeeTable({ employees, onViewDetails, onDelete }: EmployeeTa
             className="pl-10"
           />
         </div>
-        
         <Button onClick={handleExport} variant="outline">
-          <Download className="mr-2 h-4 w-4" /> Exportar CSV ({filteredEmployees.length})
+          <Download className="mr-2 h-4 w-4" />
+          Exportar CSV ({filteredEmployees.length})
         </Button>
       </div>
-
+      
       <div className="rounded-md border overflow-x-auto">
         <Table>
           <TableHeader>
@@ -129,22 +132,17 @@ export function EmployeeTable({ employees, onViewDetails, onDelete }: EmployeeTa
                   <TableCell>{employee.nucleusName}</TableCell>
                   <TableCell>{employee.leadership}</TableCell>
                   <TableCell className="text-center space-x-2 min-w-[150px]">
-                    <Button 
-                      variant="outline" 
-                      size="icon" 
-                      onClick={() => onViewDetails(employee)}
-                      title="Ver/Editar Detalhes"
-                    >
+                    <Button variant="outline" size="icon" asChild>
+                      <Link to={`/funcionarios/${employee.id}`} title="Ver Resumo">
+                        <Eye className="h-4 w-4" />
+                      </Link>
+                    </Button>
+                    <Button variant="outline" size="icon" onClick={() => onViewDetails(employee)} title="Ver/Editar Detalhes">
                       <Pencil className="h-4 w-4" />
                     </Button>
-                    
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
-                        <Button 
-                          variant="destructive" 
-                          size="icon" 
-                          title="Excluir Funcionário"
-                        >
+                        <Button variant="destructive" size="icon" title="Excluir Funcionário">
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </AlertDialogTrigger>
@@ -157,7 +155,7 @@ export function EmployeeTable({ employees, onViewDetails, onDelete }: EmployeeTa
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                           <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                          <AlertDialogAction 
+                          <AlertDialogAction
                             onClick={() => onDelete(employee.id, employee.name)}
                             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                           >
